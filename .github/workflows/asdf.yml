@@ -1,0 +1,27 @@
+name: Daily Pull Request
+
+on:
+  schedule:
+    - cron: '0 8 * * *'
+
+jobs:
+  create_pull_request:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.PAT }}
+          author: ${{ github.actor }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com>
+          branch: develop
+          base: master
+          title: 'Daily PR to Main'
+          labels: |
+            automated pr
+          draft: false
